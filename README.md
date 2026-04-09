@@ -1,6 +1,6 @@
 # Pig Dice Game
 
-A small front-end project that implements the classic Pig dice game with React, TypeScript, Tailwind CSS, and `useReducer`. The code keeps game rules in pure functions, uses a reducer for explicit state transitions, and keeps UI components focused on presentation.
+A small front-end implementation of the classic Pig dice game built with React, TypeScript, Tailwind CSS, and `useReducer`. The project is structured to keep game rules predictable, UI components focused, and state transitions easy to follow.
 
 ## Project structure
 
@@ -40,9 +40,9 @@ src/
 - UI components are intentionally small and presentation-focused to keep responsibilities clear.
 - Tailwind is used for straightforward styling without introducing extra component libraries.
 
-## Why `useReducer` instead of Zustand
+## Why `useReducer`
 
-This game has a small but stateful workflow with clear transitions: roll, hold, and reset. `useReducer` is enough for that scope, keeps the logic local to the feature, and makes each transition explicit in a single predictable place. Zustand would add another dependency and abstraction layer without solving a real problem for a small app with local state.
+This game has a small but stateful workflow with clear transitions: roll, hold, and reset. `useReducer` keeps the logic local to the feature and makes each transition explicit in a single predictable place. It fits the scope well without adding unnecessary complexity.
 
 ## Accessibility considerations
 
