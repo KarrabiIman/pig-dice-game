@@ -17,7 +17,7 @@ describe('gameReducer', () => {
     const currentState: GameState = {
       ...initialGameState,
       currentTurnScore: 8,
-      activePlayer: 0,
+      activePlayerIndex: 0,
     };
 
     const state = gameReducer(currentState, {
@@ -26,32 +26,41 @@ describe('gameReducer', () => {
     });
 
     expect(state.currentTurnScore).toBe(0);
-    expect(state.activePlayer).toBe(1);
+    expect(state.activePlayerIndex).toBe(1);
   });
 
   it('handles HOLD_TURN by banking points and switching player', () => {
     const currentState: GameState = {
       ...initialGameState,
-      players: [30, 10],
+      players: [
+        { id: 'player-1', score: 30 },
+        { id: 'player-2', score: 10 },
+      ],
       currentTurnScore: 14,
-      activePlayer: 1,
+      activePlayerIndex: 1,
     };
 
     const state = gameReducer(currentState, { type: 'HOLD_TURN' });
 
-    expect(state.players).toEqual([30, 24]);
+    expect(state.players).toEqual([
+      { id: 'player-1', score: 30 },
+      { id: 'player-2', score: 24 },
+    ]);
     expect(state.currentTurnScore).toBe(0);
-    expect(state.activePlayer).toBe(0);
+    expect(state.activePlayerIndex).toBe(0);
   });
 
   it('handles NEW_GAME by resetting state', () => {
     const currentState: GameState = {
-      players: [99, 100],
+      players: [
+        { id: 'player-1', score: 99 },
+        { id: 'player-2', score: 100 },
+      ],
       currentTurnScore: 12,
-      activePlayer: 1,
+      activePlayerIndex: 1,
       currentDie: 4,
       status: 'finished',
-      winner: 1,
+      winner: 'player-2',
     };
 
     const state = gameReducer(currentState, { type: 'NEW_GAME' });

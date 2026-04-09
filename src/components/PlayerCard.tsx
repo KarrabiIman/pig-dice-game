@@ -1,7 +1,5 @@
-import type { PlayerIndex } from '../game/gameTypes';
-
 interface PlayerCardProps {
-  index: PlayerIndex;
+  index: number;
   score: number;
   currentScore: number;
   isActive: boolean;

@@ -1,3 +1,4 @@
+import { getActivePlayer, isGameFinished } from '../game/gameSelectors';
 import type { GameState } from '../game/gameTypes';
 
 interface StatusMessageProps {
@@ -5,10 +6,12 @@ interface StatusMessageProps {
 }
 
 export const StatusMessage = ({ state }: StatusMessageProps) => {
+  const activePlayer = getActivePlayer(state);
+  const winnerIndex = state.players.findIndex((player) => player.id === state.winner);
   const message =
-    state.status === 'finished' && state.winner !== null
-      ? `Player ${state.winner + 1} wins with ${state.players[state.winner]} points.`
-      : `Player ${state.activePlayer + 1} turn.`;
+    isGameFinished(state) && state.winner !== null && winnerIndex !== -1
+      ? `Player ${winnerIndex + 1} wins with ${state.players[winnerIndex].score} points.`
+      : `Player ${state.players.findIndex((player) => player.id === activePlayer.id) + 1} turn.`;
 
   return (
     <p

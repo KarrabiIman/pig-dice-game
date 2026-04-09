@@ -1,9 +1,11 @@
-import type { GameState, PlayerIndex } from './gameTypes';
+import type { GameState } from './gameTypes';
 
 export const WINNING_SCORE = 100;
 
-export const getNextPlayer = (player: PlayerIndex): PlayerIndex =>
-  player === 0 ? 1 : 0;
+export const getNextPlayerIndex = (
+  playerIndex: number,
+  playerCount: number
+): number => (playerIndex + 1) % playerCount;
 
 export const isWinningScore = (score: number): boolean =>
   score >= WINNING_SCORE;
@@ -22,7 +24,10 @@ export const applyRoll = (state: GameState, value: number): GameState => {
       ...state,
       currentDie: value,
       currentTurnScore: 0,
-      activePlayer: getNextPlayer(state.activePlayer),
+      activePlayerIndex: getNextPlayerIndex(
+        state.activePlayerIndex,
+        state.players.length
+      ),
     };
   }
 
@@ -38,10 +43,12 @@ export const applyHold = (state: GameState): GameState => {
     return state;
   }
 
-  const updatedPlayers = [...state.players] as [number, number];
-  const totalScore =
-    updatedPlayers[state.activePlayer] + state.currentTurnScore;
-  updatedPlayers[state.activePlayer] = totalScore;
+  const updatedPlayers = state.players.map((player, index) =>
+    index === state.activePlayerIndex
+      ? { ...player, score: player.score + state.currentTurnScore }
+      : player
+  );
+  const totalScore = updatedPlayers[state.activePlayerIndex].score;
 
   if (isWinningScore(totalScore)) {
     return {
@@ -49,7 +56,7 @@ export const applyHold = (state: GameState): GameState => {
       players: updatedPlayers,
       currentTurnScore: 0,
       status: 'finished',
-      winner: state.activePlayer,
+      winner: updatedPlayers[state.activePlayerIndex].id,
     };
   }
 
@@ -57,6 +64,9 @@ export const applyHold = (state: GameState): GameState => {
     ...state,
     players: updatedPlayers,
     currentTurnScore: 0,
-    activePlayer: getNextPlayer(state.activePlayer),
+    activePlayerIndex: getNextPlayerIndex(
+      state.activePlayerIndex,
+      state.players.length
+    ),
   };
 };

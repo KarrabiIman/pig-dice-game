@@ -7,7 +7,7 @@ describe('gameLogic', () => {
     const state = applyRoll(initialGameState, 5);
 
     expect(state.currentTurnScore).toBe(5);
-    expect(state.activePlayer).toBe(0);
+    expect(state.activePlayerIndex).toBe(0);
     expect(state.currentDie).toBe(5);
   });
 
@@ -20,39 +20,48 @@ describe('gameLogic', () => {
     const state = applyRoll(midTurnState, 1);
 
     expect(state.currentTurnScore).toBe(0);
-    expect(state.activePlayer).toBe(1);
+    expect(state.activePlayerIndex).toBe(1);
     expect(state.currentDie).toBe(1);
   });
 
   it('hold banks score and switches player', () => {
     const midTurnState: GameState = {
       ...initialGameState,
-      players: [18, 22],
+      players: [
+        { id: 'player-1', score: 18 },
+        { id: 'player-2', score: 22 },
+      ],
       currentTurnScore: 9,
-      activePlayer: 0,
+      activePlayerIndex: 0,
     };
 
     const state = applyHold(midTurnState);
 
-    expect(state.players).toEqual([27, 22]);
+    expect(state.players).toEqual([
+      { id: 'player-1', score: 27 },
+      { id: 'player-2', score: 22 },
+    ]);
     expect(state.currentTurnScore).toBe(0);
-    expect(state.activePlayer).toBe(1);
+    expect(state.activePlayerIndex).toBe(1);
     expect(state.status).toBe('playing');
   });
 
   it('reaching 100 or more points ends the game', () => {
     const nearWinState: GameState = {
       ...initialGameState,
-      players: [WINNING_SCORE - 4, 60],
+      players: [
+        { id: 'player-1', score: WINNING_SCORE - 4 },
+        { id: 'player-2', score: 60 },
+      ],
       currentTurnScore: 4,
-      activePlayer: 0,
+      activePlayerIndex: 0,
     };
 
     const state = applyHold(nearWinState);
 
-    expect(state.players[0]).toBe(WINNING_SCORE);
+    expect(state.players[0].score).toBe(WINNING_SCORE);
     expect(state.status).toBe('finished');
-    expect(state.winner).toBe(0);
+    expect(state.winner).toBe('player-1');
     expect(state.currentTurnScore).toBe(0);
   });
 });

@@ -1,14 +1,17 @@
-export type PlayerIndex = 0 | 1;
-
 export type GameStatus = 'playing' | 'finished';
 
+export interface Player {
+  id: string;
+  score: number;
+}
+
 export interface GameState {
-  players: [number, number];
+  players: Player[];
   currentTurnScore: number;
-  activePlayer: PlayerIndex;
+  activePlayerIndex: number;
   currentDie: number | null;
   status: GameStatus;
-  winner: PlayerIndex | null;
+  winner: string | null;
 }
 
 export type RollDiceAction = {
