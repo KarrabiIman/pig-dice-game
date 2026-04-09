@@ -2,6 +2,10 @@
 
 A small front-end implementation of the classic Pig dice game built with React, TypeScript, Tailwind CSS, and `useReducer`. The project is structured to keep game rules predictable, UI components focused, and state transitions easy to follow.
 
+## Live Demo
+
+https://pig-dice-game-gold.vercel.app/
+
 ## Project structure
 
 ```text
