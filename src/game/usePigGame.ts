@@ -4,14 +4,14 @@ import { initialGameState } from './initialState';
 
 const rollDie = (): number => Math.floor(Math.random() * 6) + 1;
 
-export const usePigGame = () => {
+export const usePigGame = (getDiceValue: () => number = rollDie) => {
   const [state, dispatch] = useReducer(gameReducer, initialGameState);
 
   const roll = () => {
     dispatch({
       type: 'ROLL_DICE',
       payload: {
-        value: rollDie(),
+        value: getDiceValue(),
       },
     });
   };

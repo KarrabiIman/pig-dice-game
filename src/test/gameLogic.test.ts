@@ -64,4 +64,33 @@ describe('gameLogic', () => {
     expect(state.winner).toBe('player-1');
     expect(state.currentTurnScore).toBe(0);
   });
+
+  it('returns unchanged state when rolling after the game is finished', () => {
+    const finishedState: GameState = {
+      ...initialGameState,
+      status: 'finished',
+      winner: 'player-1',
+    };
+
+    expect(applyRoll(finishedState, 4)).toEqual(finishedState);
+  });
+
+  it('returns unchanged state when holding after the game is finished', () => {
+    const finishedState: GameState = {
+      ...initialGameState,
+      status: 'finished',
+      winner: 'player-1',
+    };
+
+    expect(applyHold(finishedState)).toEqual(finishedState);
+  });
+
+  it('throws when the dice value is outside the valid range', () => {
+    expect(() => applyRoll(initialGameState, 0)).toThrow(
+      'Dice value must be between 1 and 6.'
+    );
+    expect(() => applyRoll(initialGameState, 7)).toThrow(
+      'Dice value must be between 1 and 6.'
+    );
+  });
 });
