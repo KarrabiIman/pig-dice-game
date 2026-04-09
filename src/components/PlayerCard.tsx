@@ -18,13 +18,14 @@ export const PlayerCard = ({
 
   return (
     <section
-      aria-current={isActive ? 'true' : undefined}
       className={[
         'flex h-full flex-col items-center px-6 py-10 text-center transition sm:px-10 sm:py-14',
         isActive
           ? 'bg-[#fff8eb] shadow-[inset_0_0_0_1px_rgba(183,121,31,0.28)]'
-          : 'bg-white/60',
-        !isActive && !isWinner ? 'opacity-50' : '',
+          : !isWinner
+            ? 'bg-[#fcfaf8]'
+            : 'bg-white/60',
+        !isActive && !isWinner ? 'shadow-[inset_0_0_0_1px_rgba(221,214,207,0.85)]' : '',
         isWinner ? 'ring-1 ring-success/30' : '',
       ].join(' ')}
     >
@@ -37,7 +38,7 @@ export const PlayerCard = ({
               ? 'font-bold text-success'
               : isActive
                 ? 'text-[#b7791f]'
-                : 'text-[#6b6570]',
+                : 'text-[#9a938d]',
           ].join(' ')}
         >
           {statusIcon}
@@ -49,7 +50,7 @@ export const PlayerCard = ({
               ? 'font-bold text-success'
               : isActive
                 ? 'font-bold text-[#b7791f]'
-                : 'font-semibold text-[#6b6570]',
+                : 'font-medium text-[#8b847d]',
           ].join(' ')}
         >
           {isWinner ? 'Winner' : isActive ? 'Active Player' : 'Waiting'}
@@ -68,7 +69,11 @@ export const PlayerCard = ({
         <div
           className={[
             'mx-auto w-full max-w-[12rem] rounded-[1.5rem] px-6 py-4 shadow-card',
-            isActive ? 'bg-[#b7791f] text-white' : 'bg-ink text-paper',
+            isActive
+              ? 'bg-[#b7791f] text-white'
+              : isWinner
+                ? 'bg-ink text-paper'
+                : 'bg-[#eae3dc] text-ink',
           ].join(' ')}
         >
           <p className="text-sm uppercase tracking-[0.14em] text-current/90">
