@@ -2,6 +2,7 @@ import {
   getActivePlayer,
   getCurrentTurnScore,
   getPlayerCurrentScore,
+  getStatusMessage,
   isGameFinished,
   isPlayerActive,
   isPlayerWinner,
@@ -70,5 +71,28 @@ describe('gameSelectors', () => {
 
     expect(isPlayerWinner(state, 'player-1')).toBe(false);
     expect(isPlayerWinner(state, 'player-2')).toBe(true);
+  });
+
+  it('returns the active player turn message while playing', () => {
+    const state: GameState = {
+      ...initialGameState,
+      activePlayerIndex: 1,
+    };
+
+    expect(getStatusMessage(state)).toBe('Player 2 turn.');
+  });
+
+  it('returns the winner message when the game is finished', () => {
+    const state: GameState = {
+      ...initialGameState,
+      players: [
+        { id: 'player-1', score: 35 },
+        { id: 'player-2', score: 100 },
+      ],
+      status: 'finished',
+      winner: 'player-2',
+    };
+
+    expect(getStatusMessage(state)).toBe('Player 2 wins with 100 points.');
   });
 });
